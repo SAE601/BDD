@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Feb 25, 2025 at 01:58 PM
+-- Generation Time: Feb 25, 2025 at 03:23 PM
 -- Server version: 9.1.0
 -- PHP Version: 8.3.14
 
@@ -179,10 +179,8 @@ CREATE TABLE IF NOT EXISTS `plantes` (
   `nomPlante` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `datePlantation` date DEFAULT NULL,
   `idGroupe` int NOT NULL,
-  `idPeriode` int NOT NULL,
   PRIMARY KEY (`idPlante`),
-  KEY `idGroupe` (`idGroupe`),
-  KEY `idPeriode` (`idPeriode`)
+  KEY `idGroupe` (`idGroupe`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -267,8 +265,7 @@ ALTER TABLE `irrigation`
 -- Constraints for table `plantes`
 --
 ALTER TABLE `plantes`
-  ADD CONSTRAINT `contrainte01` FOREIGN KEY (`idGroupe`) REFERENCES `groupe` (`idGroupe`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  ADD CONSTRAINT `contrainte02` FOREIGN KEY (`idPeriode`) REFERENCES `periode` (`idPeriode`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+  ADD CONSTRAINT `contrainte01` FOREIGN KEY (`idGroupe`) REFERENCES `groupe` (`idGroupe`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 --
 -- Constraints for table `recettes`

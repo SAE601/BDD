@@ -285,9 +285,6 @@
             <mxPoint x="745" y="600" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="TUq2GXR6BLDI8T9kkrE9-0" value="Actor" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" vertex="1" parent="T9H4gMGK_s0aDdUB7x26-1">
-          <mxGeometry x="155" y="430" width="30" height="60" as="geometry" />
-        </mxCell>
       </root>
     </mxGraphModel>
   </diagram>

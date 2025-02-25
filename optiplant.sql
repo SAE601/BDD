@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : mer. 05 fév. 2025 à 16:58
+-- Généré le : mar. 25 fév. 2025 à 11:21
 -- Version du serveur : 9.1.0
 -- Version de PHP : 8.3.14
 
@@ -30,8 +30,8 @@ SET time_zone = "+00:00";
 DROP TABLE IF EXISTS `actionneurs`;
 CREATE TABLE IF NOT EXISTS `actionneurs` (
   `idActionneur` int NOT NULL AUTO_INCREMENT,
-  `typeActionneur` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
-  `localisation` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `typeActionneur` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `localisation` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `dateInstallation` date DEFAULT NULL,
   `idBac` int DEFAULT NULL,
   `datemaintenance` date DEFAULT NULL,
@@ -48,9 +48,9 @@ CREATE TABLE IF NOT EXISTS `actionneurs` (
 DROP TABLE IF EXISTS `alertes`;
 CREATE TABLE IF NOT EXISTS `alertes` (
   `idAlerte` int NOT NULL AUTO_INCREMENT,
-  `typeAlerte` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+  `typeAlerte` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `dateHeure` datetime NOT NULL,
-  `message` text COLLATE utf8mb4_general_ci,
+  `message` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
   `idBac` int DEFAULT NULL,
   PRIMARY KEY (`idAlerte`),
   KEY `idBac` (`idBac`)
@@ -65,9 +65,9 @@ CREATE TABLE IF NOT EXISTS `alertes` (
 DROP TABLE IF EXISTS `bacs`;
 CREATE TABLE IF NOT EXISTS `bacs` (
   `idBac` int NOT NULL AUTO_INCREMENT,
-  `nomBac` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+  `nomBac` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `capacite` decimal(10,2) DEFAULT NULL,
-  `localisation` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `localisation` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `idPlante` int DEFAULT NULL,
   `energieconsommee` int DEFAULT NULL,
   PRIMARY KEY (`idBac`),
@@ -83,8 +83,8 @@ CREATE TABLE IF NOT EXISTS `bacs` (
 DROP TABLE IF EXISTS `capteurs`;
 CREATE TABLE IF NOT EXISTS `capteurs` (
   `idCapteur` int NOT NULL AUTO_INCREMENT,
-  `typeCapteur` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
-  `localisation` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `typeCapteur` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `localisation` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `dateInstallation` date DEFAULT NULL,
   `idBac` int DEFAULT NULL,
   `datemaintenance` date DEFAULT NULL,
@@ -95,20 +95,15 @@ CREATE TABLE IF NOT EXISTS `capteurs` (
 -- --------------------------------------------------------
 
 --
--- Structure de la table `irrigation`
+-- Structure de la table `groupe`
 --
 
-DROP TABLE IF EXISTS `irrigation`;
-CREATE TABLE IF NOT EXISTS `irrigation` (
-  `idIrrigation` int NOT NULL AUTO_INCREMENT,
-  `dateHeure` datetime NOT NULL,
-  `quantiteEau` decimal(10,2) DEFAULT NULL,
-  `idBac` int DEFAULT NULL,
-  `idRecette` int DEFAULT NULL,
-  PRIMARY KEY (`idIrrigation`),
-  KEY `idBac` (`idBac`),
-  KEY `idRecette` (`idRecette`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+DROP TABLE IF EXISTS `groupe`;
+CREATE TABLE IF NOT EXISTS `groupe` (
+  `idGroupe` int NOT NULL AUTO_INCREMENT,
+  `nom` varchar(20) COLLATE utf32_unicode_ci NOT NULL,
+  PRIMARY KEY (`idGroupe`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf32 COLLATE=utf32_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -138,10 +133,23 @@ DROP TABLE IF EXISTS `ombrieres`;
 CREATE TABLE IF NOT EXISTS `ombrieres` (
   `idOmbriere` int NOT NULL AUTO_INCREMENT,
   `angleActuel` decimal(5,2) DEFAULT NULL,
-  `modeFonctionnement` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `modeFonctionnement` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `dateHeure` datetime NOT NULL,
   PRIMARY KEY (`idOmbriere`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `periode`
+--
+
+DROP TABLE IF EXISTS `periode`;
+CREATE TABLE IF NOT EXISTS `periode` (
+  `idPeriode` int NOT NULL AUTO_INCREMENT,
+  `nom` varchar(20) COLLATE utf32_unicode_ci NOT NULL,
+  PRIMARY KEY (`idPeriode`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf32 COLLATE=utf32_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -152,12 +160,13 @@ CREATE TABLE IF NOT EXISTS `ombrieres` (
 DROP TABLE IF EXISTS `plantes`;
 CREATE TABLE IF NOT EXISTS `plantes` (
   `idPlante` int NOT NULL AUTO_INCREMENT,
-  `nomPlante` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
-  `typePlante` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `besoinEau` decimal(5,2) DEFAULT NULL,
-  `besoinLumiere` decimal(5,2) DEFAULT NULL,
+  `nomPlante` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `datePlantation` date DEFAULT NULL,
-  PRIMARY KEY (`idPlante`)
+  `idGroupe` int NOT NULL,
+  `idPeriode` int NOT NULL,
+  PRIMARY KEY (`idPlante`),
+  KEY `idGroupe` (`idGroupe`),
+  KEY `idPeriode` (`idPeriode`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -182,11 +191,23 @@ CREATE TABLE IF NOT EXISTS `productionelectrique` (
 
 DROP TABLE IF EXISTS `recettes`;
 CREATE TABLE IF NOT EXISTS `recettes` (
-  `idRecette` int NOT NULL AUTO_INCREMENT,
-  `nomRecette` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
-  `composition` text COLLATE utf8mb4_general_ci,
-  `quantiteEau` decimal(10,2) DEFAULT NULL,
-  PRIMARY KEY (`idRecette`)
+  `idGroupe` int NOT NULL,
+  `idPeriode` int NOT NULL,
+  `eauArrosage` decimal(5,2) DEFAULT NULL,
+  `arrosage/jour` decimal(5,2) DEFAULT NULL,
+  `eauTotalJour` decimal(5,2) DEFAULT NULL,
+  `rationNPK` int DEFAULT NULL,
+  `azote` decimal(4,2) DEFAULT NULL,
+  `tempsActivationAzote` decimal(4,2) DEFAULT NULL,
+  `phosphore` decimal(4,2) DEFAULT NULL,
+  `tempsActivationPhosphore` decimal(4,2) DEFAULT NULL,
+  `potassium` decimal(4,2) DEFAULT NULL,
+  `tempsActivationPotassium` decimal(4,2) DEFAULT NULL,
+  `quantiteNutriment` decimal(4,2) DEFAULT NULL,
+  `seuilHumidite` decimal(5,2) DEFAULT NULL,
+  PRIMARY KEY (`idGroupe`,`idPeriode`) USING BTREE,
+  KEY `idGroupe` (`idGroupe`),
+  KEY `idPeriode` (`idPeriode`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 COMMIT;
 

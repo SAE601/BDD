@@ -21,8 +21,8 @@ SELECT * FROM `productionelectrique`;
 -- 7. Lister les différents types d'actionneurs et leur date d'installation
 SELECT `typeActionneur`, `dateInstallation` FROM `actionneurs`;
 
--- 8. Afficher toutes les irrigations qui ont eu lieu dans un bac
-SELECT * FROM `irrigation` WHERE `idBac` = 1;
+-- 8. Afficher toutes les irrigations qui ont eu lieu dans un bac la plus récente a la plus vieille.
+SELECT * FROM `irrigation` WHERE `idBac` = 1 ORDER BY dateHeure DESC;
 
 -- 9. Afficher les groupes de plantes et leur période de culture
 SELECT g.`nom`, p.`nomPlante`
@@ -77,3 +77,9 @@ FROM `plantes` p
 JOIN `recettes` r ON p.`idGroupe` = r.`idGroupe`
 JOIN `periode` pe ON r.`idPeriode` = pe.`idPeriode`
 WHERE pe.`nom` = 'Croissance végétative';
+
+-- réfléchir au niveau du php . n'afficher que la dernière irrigation a chaque fois 
+-- liste des irrigations sur les dernières 24h
+-- liste des energie prod sur les dernieres 24h 
+-- afficher la liste des capteurs inactif depuis +de x temps pour maintenance préventive 
+

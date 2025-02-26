@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : mer. 26 fév. 2025 à 07:55
+-- Généré le : mer. 26 fév. 2025 à 08:11
 -- Version du serveur : 9.1.0
 -- Version de PHP : 8.3.14
 
@@ -157,7 +157,7 @@ INSERT INTO `irrigation` (`idIrrigation`, `dateHeure`, `idBac`, `idRecette`) VAL
 DROP TABLE IF EXISTS `meteo`;
 CREATE TABLE IF NOT EXISTS `meteo` (
   `idMeteo` int NOT NULL AUTO_INCREMENT,
-  `dateHeure` datetime NOT NULL,
+  `dateHeure` timestamp NOT NULL,
   `temperature` decimal(5,2) DEFAULT NULL,
   `humidite` decimal(5,2) DEFAULT NULL,
   `luminosite` decimal(10,2) DEFAULT NULL,
@@ -177,7 +177,7 @@ CREATE TABLE IF NOT EXISTS `ombrieres` (
   `idOmbriere` int NOT NULL AUTO_INCREMENT,
   `angleActuel` decimal(5,2) DEFAULT NULL,
   `modeFonctionnement` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `dateHeure` datetime NOT NULL,
+  `dateHeure` timestamp NOT NULL,
   PRIMARY KEY (`idOmbriere`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -239,7 +239,7 @@ INSERT INTO `plantes` (`idPlante`, `nomPlante`, `datePlantation`, `idGroupe`) VA
 DROP TABLE IF EXISTS `productionelectrique`;
 CREATE TABLE IF NOT EXISTS `productionelectrique` (
   `idProduction` int NOT NULL AUTO_INCREMENT,
-  `dateHeure` datetime NOT NULL,
+  `dateHeure` timestamp NOT NULL,
   `energieProduite` decimal(10,2) DEFAULT NULL,
   PRIMARY KEY (`idProduction`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;

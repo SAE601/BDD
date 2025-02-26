@@ -236,7 +236,7 @@ CREATE TABLE IF NOT EXISTS `recettes` (
 -- Déchargement des données de la table `recettes`
 --
 
-INSERT INTO `recettes` (`idRecipe`, `idPeriod`, `idPlant`, `watering`, `dailyWatering`, `quotidien`, `nitrogen`, `phosphorus`, `potassium`, `humidityThreshold`) VALUES
+INSERT INTO `recettes` (`idRecipe`, `idPeriod`, `idPlant`, `watering`, `dailyWatering`, `daily`, `nitrogen`, `phosphorus`, `potassium`, `humidityThreshold`) VALUES
 (1, 1, 0, 1.60, 3.00, 1, 5.33, 5.33, 5.33, 50.00),
 (2, 2, 0, 12.00, 1.00, 1, 72.00, 24.00, 24.00, 40.00),
 (3, 1, 0, 2.00, 3.00, 1, 6.67, 6.67, 6.67, 50.00),

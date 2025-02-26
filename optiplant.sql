@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : mer. 26 fév. 2025 à 10:02
+-- Généré le : mer. 26 fév. 2025 à 12:35
 -- Version du serveur : 9.1.0
 -- Version de PHP : 8.3.14
 
@@ -124,7 +124,7 @@ CREATE TABLE IF NOT EXISTS `matériels` (
   `idMateriels` int NOT NULL AUTO_INCREMENT,
   `nom` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `famille` varchar(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `localisation` varchar(20) COLLATE utf8mb4_general_ci NOT NULL,
+  `localisation` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `dateInstallation` date NOT NULL,
   `idBac` int NOT NULL,
   `périodeMaintenance` int NOT NULL,
@@ -243,17 +243,10 @@ CREATE TABLE IF NOT EXISTS `recettes` (
   `eauArrosage` decimal(5,2) DEFAULT NULL,
   `arrosage_jour` decimal(5,2) DEFAULT NULL,
   `quotidien` tinyint NOT NULL,
-  `eauTotalJour` decimal(5,2) DEFAULT NULL,
-  `ratioNPK` varchar(5) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `azote` decimal(4,2) DEFAULT NULL,
-  `tempsActivationAzote` decimal(4,2) DEFAULT NULL,
   `phosphore` decimal(4,2) DEFAULT NULL,
-  `tempsActivationPhosphore` decimal(4,2) DEFAULT NULL,
   `potassium` decimal(4,2) DEFAULT NULL,
-  `tempsActivationPotassium` decimal(4,2) DEFAULT NULL,
-  `quantiteNutriment` decimal(4,0) DEFAULT NULL,
-  `seuilHumiditebas` decimal(5,2) DEFAULT NULL,
-  `seuilHumiditehaut` decimal(5,2) NOT NULL,
+  `seuilHumidite` decimal(5,2) DEFAULT NULL,
   PRIMARY KEY (`idRecette`),
   KEY `idGroupe` (`idGroupe`),
   KEY `idPeriode` (`idPeriode`)
@@ -263,12 +256,12 @@ CREATE TABLE IF NOT EXISTS `recettes` (
 -- Déchargement des données de la table `recettes`
 --
 
-INSERT INTO `recettes` (`idRecette`, `idGroupe`, `idPeriode`, `eauArrosage`, `arrosage_jour`, `quotidien`, `eauTotalJour`, `ratioNPK`, `azote`, `tempsActivationAzote`, `phosphore`, `tempsActivationPhosphore`, `potassium`, `tempsActivationPotassium`, `quantiteNutriment`, `seuilHumiditebas`, `seuilHumiditehaut`) VALUES
-(1, 1, 1, 1.60, 3.00, 1, 4.80, '1-1-1', 5.33, 1.02, 5.33, 1.18, 5.33, 1.10, 16, 50.00, 60.00),
-(2, 1, 2, 12.00, 1.00, 1, 12.00, '3-1-1', 72.00, 13.80, 24.00, 5.31, 24.00, 4.95, 120, 40.00, 50.00),
-(3, 2, 1, 2.00, 3.00, 1, 6.00, '1-1-1', 6.67, 1.28, 6.67, 1.47, 6.67, 1.38, 20, 50.00, 60.00),
-(4, 2, 2, 16.00, 1.00, 1, 16.00, '2-1-2', 64.00, 12.27, 32.00, 7.08, 64.00, 13.21, 160, 40.00, 50.00),
-(5, 2, 3, 16.00, 0.50, 0, 16.00, '1-2-3', 32.00, 6.13, 64.00, 14.15, 96.00, 19.81, 160, 40.00, 50.00);
+INSERT INTO `recettes` (`idRecette`, `idGroupe`, `idPeriode`, `eauArrosage`, `arrosage_jour`, `quotidien`, `azote`, `phosphore`, `potassium`, `seuilHumidite`) VALUES
+(1, 1, 1, 1.60, 3.00, 1, 5.33, 5.33, 5.33, 50.00),
+(2, 1, 2, 12.00, 1.00, 1, 72.00, 24.00, 24.00, 40.00),
+(3, 2, 1, 2.00, 3.00, 1, 6.67, 6.67, 6.67, 50.00),
+(4, 2, 2, 16.00, 1.00, 1, 64.00, 32.00, 64.00, 40.00),
+(5, 2, 3, 16.00, 0.50, 0, 32.00, 64.00, 96.00, 40.00);
 
 --
 -- Contraintes pour les tables déchargées

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : jeu. 27 fév. 2025 à 10:50
+-- Généré le : jeu. 27 fév. 2025 à 11:00
 -- Version du serveur : 9.1.0
 -- Version de PHP : 8.3.14
 
@@ -63,7 +63,7 @@ CREATE TABLE IF NOT EXISTS `electric_prod` (
 DROP TABLE IF EXISTS `groups`;
 CREATE TABLE IF NOT EXISTS `groups` (
   `idGroup` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(50) CHARACTER SET utf32 COLLATE utf32_unicode_ci NOT NULL,
+  `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`idGroup`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf32 COLLATE=utf32_unicode_ci;
 
@@ -72,11 +72,11 @@ CREATE TABLE IF NOT EXISTS `groups` (
 --
 
 INSERT INTO `groups` (`idGroup`, `name`) VALUES
-(1, 'Plantes à feuilles'),
-(2, 'Plantes à fruits'),
-(3, 'Herbes aromatiques'),
-(4, 'Légumes racines'),
-(5, 'Plante à fleurs');
+(1, '\0\0\0P\0\0\0l\0\0\0a\0\0\0n\0\0\0t\0\0\0e\0\0\0s\0\0\0 \0\0\0'),
+(2, '\0\0\0P\0\0\0l\0\0\0a\0\0\0n\0\0\0t\0\0\0e\0\0\0s\0\0\0 \0\0\0'),
+(3, '\0\0\0H\0\0\0e\0\0\0r\0\0\0b\0\0\0e\0\0\0s\0\0\0 \0\0\0a\0\0\0r\0\0\0o\0\0\0m\0\0\0a\0\0'),
+(4, '\0\0\0L\0\0\0'),
+(5, '\0\0\0P\0\0\0l\0\0\0a\0\0\0n\0\0\0t\0\0\0e\0\0\0 \0\0\0');
 
 -- --------------------------------------------------------
 
@@ -114,7 +114,7 @@ INSERT INTO `irrigation` (`idIrrigation`, `dateTime`, `idTray`, `idRecipe`) VALU
 DROP TABLE IF EXISTS `periods`;
 CREATE TABLE IF NOT EXISTS `periods` (
   `idPeriod` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(50) CHARACTER SET utf32 COLLATE utf32_unicode_ci NOT NULL,
+  `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`idPeriod`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf32 COLLATE=utf32_unicode_ci;
 
@@ -123,10 +123,10 @@ CREATE TABLE IF NOT EXISTS `periods` (
 --
 
 INSERT INTO `periods` (`idPeriod`, `name`) VALUES
-(1, 'Semis'),
-(2, 'Croissance végétative'),
-(3, 'Floraison et fructification'),
-(4, 'Développement des racines');
+(1, '\0\0\0S\0\0\0e\0\0\0m\0\0\0i\0\0\0s'),
+(2, '\0\0\0C\0\0\0r\0\0\0o\0\0\0i\0\0\0s\0\0\0s\0\0\0a\0\0\0n\0\0\0c\0\0\0e\0\0\0 \0\0\0v\0\0'),
+(3, '\0\0\0F\0\0\0l\0\0\0o\0\0\0r\0\0\0a\0\0\0i\0\0\0s\0\0\0o\0\0\0n\0\0\0 \0\0\0e\0\0\0t\0\0'),
+(4, '\0\0\0D\0\0\0');
 
 -- --------------------------------------------------------
 
@@ -137,7 +137,7 @@ INSERT INTO `periods` (`idPeriod`, `name`) VALUES
 DROP TABLE IF EXISTS `plants`;
 CREATE TABLE IF NOT EXISTS `plants` (
   `idPlant` int NOT NULL AUTO_INCREMENT,
-  `plantName` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `plantName` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `plantDate` date DEFAULT NULL,
   `idGroup` int NOT NULL,
   PRIMARY KEY (`idPlant`),
@@ -172,7 +172,7 @@ CREATE TABLE IF NOT EXISTS `recipes` (
   `phosphorus` decimal(4,2) DEFAULT NULL,
   `potassium` decimal(4,2) DEFAULT NULL,
   `humidityThreshold` decimal(5,2) DEFAULT NULL,
-  `sunlight` int NOT NULL,
+  `sunlight` decimal(2,0) NOT NULL,
   PRIMARY KEY (`idRecipe`),
   KEY `idPeriode` (`idPeriod`),
   KEY `idPlant` (`idPlant`)
@@ -213,7 +213,7 @@ CREATE TABLE IF NOT EXISTS `shade_house` (
 DROP TABLE IF EXISTS `trays`;
 CREATE TABLE IF NOT EXISTS `trays` (
   `idTray` int NOT NULL AUTO_INCREMENT,
-  `nameTray` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `nameTray` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `status` tinyint NOT NULL DEFAULT '1',
   `idPlant` int DEFAULT NULL,
   PRIMARY KEY (`idTray`),

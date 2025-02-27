@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : jeu. 27 fév. 2025 à 10:22
+-- Généré le : jeu. 27 fév. 2025 à 10:50
 -- Version du serveur : 9.1.0
 -- Version de PHP : 8.3.14
 
@@ -172,6 +172,7 @@ CREATE TABLE IF NOT EXISTS `recipes` (
   `phosphorus` decimal(4,2) DEFAULT NULL,
   `potassium` decimal(4,2) DEFAULT NULL,
   `humidityThreshold` decimal(5,2) DEFAULT NULL,
+  `sunlight` int NOT NULL,
   PRIMARY KEY (`idRecipe`),
   KEY `idPeriode` (`idPeriod`),
   KEY `idPlant` (`idPlant`)
@@ -181,12 +182,12 @@ CREATE TABLE IF NOT EXISTS `recipes` (
 -- Déchargement des données de la table `recipes`
 --
 
-INSERT INTO `recipes` (`idRecipe`, `idPeriod`, `idPlant`, `watering`, `dailyWatering`, `daily`, `nitrogen`, `phosphorus`, `potassium`, `humidityThreshold`) VALUES
-(1, 1, 0, 1.60, 3.00, 1, 5.33, 5.33, 5.33, 50.00),
-(2, 2, 0, 12.00, 1.00, 1, 72.00, 24.00, 24.00, 40.00),
-(3, 1, 0, 2.00, 3.00, 1, 6.67, 6.67, 6.67, 50.00),
-(4, 2, 0, 16.00, 1.00, 1, 64.00, 32.00, 64.00, 40.00),
-(5, 3, 0, 16.00, 0.50, 0, 32.00, 64.00, 96.00, 40.00);
+INSERT INTO `recipes` (`idRecipe`, `idPeriod`, `idPlant`, `watering`, `dailyWatering`, `daily`, `nitrogen`, `phosphorus`, `potassium`, `humidityThreshold`, `sunlight`) VALUES
+(1, 1, 0, 1.60, 3.00, 1, 5.33, 5.33, 5.33, 50.00, 0),
+(2, 2, 0, 12.00, 1.00, 1, 72.00, 24.00, 24.00, 40.00, 0),
+(3, 1, 0, 2.00, 3.00, 1, 6.67, 6.67, 6.67, 50.00, 0),
+(4, 2, 0, 16.00, 1.00, 1, 64.00, 32.00, 64.00, 40.00, 0),
+(5, 3, 0, 16.00, 0.50, 0, 32.00, 64.00, 96.00, 40.00, 0);
 
 -- --------------------------------------------------------
 

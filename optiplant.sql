@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : jeu. 27 fév. 2025 à 08:59
+-- Généré le : jeu. 27 fév. 2025 à 10:22
 -- Version du serveur : 9.1.0
 -- Version de PHP : 8.3.14
 
@@ -32,7 +32,7 @@ USE `optiplant`;
 DROP TABLE IF EXISTS `alerts`;
 CREATE TABLE IF NOT EXISTS `alerts` (
   `idAlert` int NOT NULL AUTO_INCREMENT,
-  `typeAlert` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `AlertType` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `dateTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `message` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
   `idTray` int DEFAULT NULL,
@@ -191,16 +191,16 @@ INSERT INTO `recipes` (`idRecipe`, `idPeriod`, `idPlant`, `watering`, `dailyWate
 -- --------------------------------------------------------
 
 --
--- Structure de la table `shadenets`
+-- Structure de la table `shade_house`
 --
 
-DROP TABLE IF EXISTS `shadenets`;
-CREATE TABLE IF NOT EXISTS `shadenets` (
-  `idShadenet` int NOT NULL AUTO_INCREMENT,
+DROP TABLE IF EXISTS `shade_house`;
+CREATE TABLE IF NOT EXISTS `shade_house` (
+  `idShadeHouse` int NOT NULL AUTO_INCREMENT,
   `currentAngle` decimal(5,2) DEFAULT NULL,
   `operationMode` tinyint(1) DEFAULT NULL,
   `dateTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`idShadenet`)
+  PRIMARY KEY (`idShadeHouse`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------

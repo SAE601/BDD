@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : mer. 26 fév. 2025 à 15:42
+-- Généré le : jeu. 27 fév. 2025 à 08:59
 -- Version du serveur : 9.1.0
 -- Version de PHP : 8.3.14
 
@@ -20,15 +20,17 @@ SET time_zone = "+00:00";
 --
 -- Base de données : `optiplant`
 --
+CREATE DATABASE IF NOT EXISTS `optiplant` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `optiplant`;
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `alertes`
+-- Structure de la table `alerts`
 --
 
-DROP TABLE IF EXISTS `alertes`;
-CREATE TABLE IF NOT EXISTS `alertes` (
+DROP TABLE IF EXISTS `alerts`;
+CREATE TABLE IF NOT EXISTS `alerts` (
   `idAlert` int NOT NULL AUTO_INCREMENT,
   `typeAlert` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `dateTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -41,45 +43,35 @@ CREATE TABLE IF NOT EXISTS `alertes` (
 -- --------------------------------------------------------
 
 --
--- Structure de la table `bacs`
+-- Structure de la table `electric_prod`
 --
 
-DROP TABLE IF EXISTS `bacs`;
-CREATE TABLE IF NOT EXISTS `bacs` (
-  `idTray` int NOT NULL AUTO_INCREMENT,
-  `nameTray` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `idPlant` int DEFAULT NULL,
-  `status` tinyint NOT NULL DEFAULT '1',
-  PRIMARY KEY (`idTray`),
-  KEY `idPlante` (`idPlant`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
---
--- Déchargement des données de la table `bacs`
---
-
-INSERT INTO `bacs` (`idTray`, `nameTray`, `idPlant`, `status`) VALUES
-(1, 'Bac 1', 1, 1),
-(2, 'Bac 2', 3, 1);
+DROP TABLE IF EXISTS `electric_prod`;
+CREATE TABLE IF NOT EXISTS `electric_prod` (
+  `idProduction` int NOT NULL AUTO_INCREMENT,
+  `dateTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `producedEnergy` decimal(10,2) DEFAULT NULL,
+  PRIMARY KEY (`idProduction`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `groupe`
+-- Structure de la table `groups`
 --
 
-DROP TABLE IF EXISTS `groupe`;
-CREATE TABLE IF NOT EXISTS `groupe` (
+DROP TABLE IF EXISTS `groups`;
+CREATE TABLE IF NOT EXISTS `groups` (
   `idGroup` int NOT NULL AUTO_INCREMENT,
   `name` varchar(50) CHARACTER SET utf32 COLLATE utf32_unicode_ci NOT NULL,
   PRIMARY KEY (`idGroup`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf32 COLLATE=utf32_unicode_ci;
 
 --
--- Déchargement des données de la table `groupe`
+-- Déchargement des données de la table `groups`
 --
 
-INSERT INTO `groupe` (`idGroup`, `name`) VALUES
+INSERT INTO `groups` (`idGroup`, `name`) VALUES
 (1, 'Plantes à feuilles'),
 (2, 'Plantes à fruits'),
 (3, 'Herbes aromatiques'),
@@ -116,54 +108,21 @@ INSERT INTO `irrigation` (`idIrrigation`, `dateTime`, `idTray`, `idRecipe`) VALU
 -- --------------------------------------------------------
 
 --
--- Structure de la table `meteo`
+-- Structure de la table `periods`
 --
 
-DROP TABLE IF EXISTS `meteo`;
-CREATE TABLE IF NOT EXISTS `meteo` (
-  `idMeteo` int NOT NULL AUTO_INCREMENT,
-  `dateHeure` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `temperature` decimal(5,2) DEFAULT NULL,
-  `humidite` decimal(5,2) DEFAULT NULL,
-  `luminosite` decimal(10,2) DEFAULT NULL,
-  `pluie` tinyint(1) DEFAULT NULL,
-  `vent` int DEFAULT NULL,
-  PRIMARY KEY (`idMeteo`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- --------------------------------------------------------
-
---
--- Structure de la table `ombrieres`
---
-
-DROP TABLE IF EXISTS `ombrieres`;
-CREATE TABLE IF NOT EXISTS `ombrieres` (
-  `idShadenet` int NOT NULL AUTO_INCREMENT,
-  `currentAngle` decimal(5,2) DEFAULT NULL,
-  `operationMode` tinyint(1) DEFAULT NULL,
-  `dateTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`idShadenet`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- --------------------------------------------------------
-
---
--- Structure de la table `periode`
---
-
-DROP TABLE IF EXISTS `periode`;
-CREATE TABLE IF NOT EXISTS `periode` (
+DROP TABLE IF EXISTS `periods`;
+CREATE TABLE IF NOT EXISTS `periods` (
   `idPeriod` int NOT NULL AUTO_INCREMENT,
   `name` varchar(50) CHARACTER SET utf32 COLLATE utf32_unicode_ci NOT NULL,
   PRIMARY KEY (`idPeriod`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf32 COLLATE=utf32_unicode_ci;
 
 --
--- Déchargement des données de la table `periode`
+-- Déchargement des données de la table `periods`
 --
 
-INSERT INTO `periode` (`idPeriod`, `name`) VALUES
+INSERT INTO `periods` (`idPeriod`, `name`) VALUES
 (1, 'Semis'),
 (2, 'Croissance végétative'),
 (3, 'Floraison et fructification'),
@@ -172,11 +131,11 @@ INSERT INTO `periode` (`idPeriod`, `name`) VALUES
 -- --------------------------------------------------------
 
 --
--- Structure de la table `plantes`
+-- Structure de la table `plants`
 --
 
-DROP TABLE IF EXISTS `plantes`;
-CREATE TABLE IF NOT EXISTS `plantes` (
+DROP TABLE IF EXISTS `plants`;
+CREATE TABLE IF NOT EXISTS `plants` (
   `idPlant` int NOT NULL AUTO_INCREMENT,
   `plantName` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `plantDate` date DEFAULT NULL,
@@ -186,10 +145,10 @@ CREATE TABLE IF NOT EXISTS `plantes` (
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Déchargement des données de la table `plantes`
+-- Déchargement des données de la table `plants`
 --
 
-INSERT INTO `plantes` (`idPlant`, `plantName`, `plantDate`, `idGroup`) VALUES
+INSERT INTO `plants` (`idPlant`, `plantName`, `plantDate`, `idGroup`) VALUES
 (1, 'Menthe', '2025-02-28', 1),
 (2, 'Basilic', '2025-02-10', 1),
 (3, 'Fraisier', '2025-02-13', 2),
@@ -198,25 +157,11 @@ INSERT INTO `plantes` (`idPlant`, `plantName`, `plantDate`, `idGroup`) VALUES
 -- --------------------------------------------------------
 
 --
--- Structure de la table `productionelectrique`
+-- Structure de la table `recipes`
 --
 
-DROP TABLE IF EXISTS `productionelectrique`;
-CREATE TABLE IF NOT EXISTS `productionelectrique` (
-  `idProduction` int NOT NULL AUTO_INCREMENT,
-  `dateTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `producedEnergy` decimal(10,2) DEFAULT NULL,
-  PRIMARY KEY (`idProduction`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- --------------------------------------------------------
-
---
--- Structure de la table `recettes`
---
-
-DROP TABLE IF EXISTS `recettes`;
-CREATE TABLE IF NOT EXISTS `recettes` (
+DROP TABLE IF EXISTS `recipes`;
+CREATE TABLE IF NOT EXISTS `recipes` (
   `idRecipe` int NOT NULL AUTO_INCREMENT,
   `idPeriod` int NOT NULL,
   `idPlant` int NOT NULL,
@@ -229,54 +174,111 @@ CREATE TABLE IF NOT EXISTS `recettes` (
   `humidityThreshold` decimal(5,2) DEFAULT NULL,
   PRIMARY KEY (`idRecipe`),
   KEY `idPeriode` (`idPeriod`),
-  KEY `idPlante` (`idPlant`)
+  KEY `idPlant` (`idPlant`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Déchargement des données de la table `recettes`
+-- Déchargement des données de la table `recipes`
 --
 
-INSERT INTO `recettes` (`idRecipe`, `idPeriod`, `idPlant`, `watering`, `dailyWatering`, `daily`, `nitrogen`, `phosphorus`, `potassium`, `humidityThreshold`) VALUES
+INSERT INTO `recipes` (`idRecipe`, `idPeriod`, `idPlant`, `watering`, `dailyWatering`, `daily`, `nitrogen`, `phosphorus`, `potassium`, `humidityThreshold`) VALUES
 (1, 1, 0, 1.60, 3.00, 1, 5.33, 5.33, 5.33, 50.00),
 (2, 2, 0, 12.00, 1.00, 1, 72.00, 24.00, 24.00, 40.00),
 (3, 1, 0, 2.00, 3.00, 1, 6.67, 6.67, 6.67, 50.00),
 (4, 2, 0, 16.00, 1.00, 1, 64.00, 32.00, 64.00, 40.00),
 (5, 3, 0, 16.00, 0.50, 0, 32.00, 64.00, 96.00, 40.00);
 
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `shadenets`
+--
+
+DROP TABLE IF EXISTS `shadenets`;
+CREATE TABLE IF NOT EXISTS `shadenets` (
+  `idShadenet` int NOT NULL AUTO_INCREMENT,
+  `currentAngle` decimal(5,2) DEFAULT NULL,
+  `operationMode` tinyint(1) DEFAULT NULL,
+  `dateTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`idShadenet`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `trays`
+--
+
+DROP TABLE IF EXISTS `trays`;
+CREATE TABLE IF NOT EXISTS `trays` (
+  `idTray` int NOT NULL AUTO_INCREMENT,
+  `nameTray` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `status` tinyint NOT NULL DEFAULT '1',
+  `idPlant` int DEFAULT NULL,
+  PRIMARY KEY (`idTray`),
+  KEY `idPlante` (`idPlant`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Déchargement des données de la table `trays`
+--
+
+INSERT INTO `trays` (`idTray`, `nameTray`, `status`, `idPlant`) VALUES
+(1, 'Bac 1', 1, 1),
+(2, 'Bac 2', 1, 3);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `weather`
+--
+
+DROP TABLE IF EXISTS `weather`;
+CREATE TABLE IF NOT EXISTS `weather` (
+  `idWeather` int NOT NULL AUTO_INCREMENT,
+  `dateTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `temperature` decimal(5,2) DEFAULT NULL,
+  `humidity` decimal(5,2) DEFAULT NULL,
+  `luminosity` decimal(10,2) DEFAULT NULL,
+  `rain` tinyint(1) DEFAULT NULL,
+  `wind` int DEFAULT NULL,
+  PRIMARY KEY (`idWeather`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
 --
 -- Contraintes pour les tables déchargées
 --
 
 --
--- Contraintes pour la table `alertes`
+-- Contraintes pour la table `alerts`
 --
-ALTER TABLE `alertes`
-  ADD CONSTRAINT `contrainteAlertes` FOREIGN KEY (`idTray`) REFERENCES `bacs` (`idTray`);
-
---
--- Contraintes pour la table `bacs`
---
-ALTER TABLE `bacs`
-  ADD CONSTRAINT `contrainte3` FOREIGN KEY (`idPlant`) REFERENCES `plantes` (`idPlant`);
+ALTER TABLE `alerts`
+  ADD CONSTRAINT `alerts_ibfk_1` FOREIGN KEY (`idTray`) REFERENCES `trays` (`idTray`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 --
 -- Contraintes pour la table `irrigation`
 --
 ALTER TABLE `irrigation`
-  ADD CONSTRAINT `contrainteirig1` FOREIGN KEY (`idTray`) REFERENCES `bacs` (`idTray`),
-  ADD CONSTRAINT `contrainteirig2` FOREIGN KEY (`idRecipe`) REFERENCES `recettes` (`idRecipe`);
+  ADD CONSTRAINT `contrainteirig1` FOREIGN KEY (`idTray`) REFERENCES `trays` (`idTray`),
+  ADD CONSTRAINT `contrainteirig2` FOREIGN KEY (`idRecipe`) REFERENCES `recipes` (`idRecipe`);
 
 --
--- Contraintes pour la table `plantes`
+-- Contraintes pour la table `plants`
 --
-ALTER TABLE `plantes`
-  ADD CONSTRAINT `contrainte01` FOREIGN KEY (`idGroup`) REFERENCES `groupe` (`idGroup`);
+ALTER TABLE `plants`
+  ADD CONSTRAINT `contrainte01` FOREIGN KEY (`idGroup`) REFERENCES `groups` (`idGroup`);
 
 --
--- Contraintes pour la table `recettes`
+-- Contraintes pour la table `recipes`
 --
-ALTER TABLE `recettes`
-  ADD CONSTRAINT `contrainte2` FOREIGN KEY (`idPeriod`) REFERENCES `periode` (`idPeriod`);
+ALTER TABLE `recipes`
+  ADD CONSTRAINT `contrainte2` FOREIGN KEY (`idPeriod`) REFERENCES `periods` (`idPeriod`);
+
+--
+-- Contraintes pour la table `trays`
+--
+ALTER TABLE `trays`
+  ADD CONSTRAINT `contrainte3` FOREIGN KEY (`idPlant`) REFERENCES `plants` (`idPlant`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

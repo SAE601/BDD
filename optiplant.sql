@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : jeu. 27 fév. 2025 à 11:00
+-- Généré le : jeu. 27 fév. 2025 à 11:07
 -- Version du serveur : 9.1.0
 -- Version de PHP : 8.3.14
 
@@ -116,7 +116,7 @@ CREATE TABLE IF NOT EXISTS `periods` (
   `idPeriod` int NOT NULL AUTO_INCREMENT,
   `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`idPeriod`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf32 COLLATE=utf32_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf32 COLLATE=utf32_unicode_ci;
 
 --
 -- Déchargement des données de la table `periods`
@@ -124,9 +124,9 @@ CREATE TABLE IF NOT EXISTS `periods` (
 
 INSERT INTO `periods` (`idPeriod`, `name`) VALUES
 (1, '\0\0\0S\0\0\0e\0\0\0m\0\0\0i\0\0\0s'),
-(2, '\0\0\0C\0\0\0r\0\0\0o\0\0\0i\0\0\0s\0\0\0s\0\0\0a\0\0\0n\0\0\0c\0\0\0e\0\0\0 \0\0\0v\0\0'),
-(3, '\0\0\0F\0\0\0l\0\0\0o\0\0\0r\0\0\0a\0\0\0i\0\0\0s\0\0\0o\0\0\0n\0\0\0 \0\0\0e\0\0\0t\0\0'),
-(4, '\0\0\0D\0\0\0');
+(2, 'Developpement des racines'),
+(3, 'Croissance végétative'),
+(4, 'Floraison et fructification');
 
 -- --------------------------------------------------------
 

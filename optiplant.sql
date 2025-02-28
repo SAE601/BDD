@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : ven. 28 fév. 2025 à 11:02
+-- Généré le : ven. 28 fév. 2025 à 13:06
 -- Version du serveur : 9.1.0
 -- Version de PHP : 8.3.14
 
@@ -38,7 +38,16 @@ CREATE TABLE IF NOT EXISTS `alerts` (
   `idTray` int DEFAULT NULL,
   PRIMARY KEY (`idAlert`),
   KEY `idBac` (`idTray`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Déchargement des données de la table `alerts`
+--
+
+INSERT INTO `alerts` (`idAlert`, `AlertType`, `dateTime`, `message`, `idTray`) VALUES
+(1, 'Température ', '2025-02-28 12:42:15', 'Température élevée', 1),
+(2, 'Humidité ', '2025-02-28 12:42:15', 'Humidité basse', 1),
+(3, 'Vent', '2025-02-28 12:42:15', ' Vent fort', 1);
 
 -- --------------------------------------------------------
 
@@ -48,13 +57,21 @@ CREATE TABLE IF NOT EXISTS `alerts` (
 
 DROP TABLE IF EXISTS `data`;
 CREATE TABLE IF NOT EXISTS `data` (
-  `idData` int NOT NULL,
+  `idData` int NOT NULL AUTO_INCREMENT,
   `value` int NOT NULL,
   `dateTime` timestamp NULL DEFAULT NULL,
   `idSensor` int NOT NULL,
   PRIMARY KEY (`idData`),
   KEY `idSensor` (`idSensor`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Déchargement des données de la table `data`
+--
+
+INSERT INTO `data` (`idData`, `value`, `dateTime`, `idSensor`) VALUES
+(1, 54, '2025-02-28 12:51:58', 1),
+(2, 26, '2025-02-28 12:51:58', 2);
 
 -- --------------------------------------------------------
 
@@ -68,7 +85,17 @@ CREATE TABLE IF NOT EXISTS `electric_prod` (
   `dateTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `producedEnergy` decimal(10,2) DEFAULT NULL,
   PRIMARY KEY (`idProduction`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Déchargement des données de la table `electric_prod`
+--
+
+INSERT INTO `electric_prod` (`idProduction`, `dateTime`, `producedEnergy`) VALUES
+(1, '2025-02-28 17:54:02', 760.00),
+(2, '2025-02-28 14:54:02', 1200.00),
+(3, '2025-02-28 20:54:03', 21.00),
+(4, '2025-02-28 11:54:03', 2460.00);
 
 -- --------------------------------------------------------
 
@@ -214,14 +241,23 @@ INSERT INTO `recipes` (`idRecipe`, `idPeriod`, `idPlant`, `watering`, `dailyWate
 DROP TABLE IF EXISTS `sensor`;
 CREATE TABLE IF NOT EXISTS `sensor` (
   `idSensor` int NOT NULL AUTO_INCREMENT,
-  `type` varchar(20) COLLATE utf8mb4_general_ci NOT NULL,
-  `name` varchar(20) COLLATE utf8mb4_general_ci NOT NULL,
-  `unit` varchar(10) COLLATE utf8mb4_general_ci NOT NULL,
-  `freq` timestamp NOT NULL,
+  `type` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `name` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `unit` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `freq` time NOT NULL,
   `idTray` int NOT NULL,
   PRIMARY KEY (`idSensor`),
   KEY `idTray` (`idTray`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Déchargement des données de la table `sensor`
+--
+
+INSERT INTO `sensor` (`idSensor`, `type`, `name`, `unit`, `freq`, `idTray`) VALUES
+(1, 'Humidité ', 'Capteur 1', '%', '00:10:43', 1),
+(2, 'Température', 'Capteur 2', '°C', '03:12:00', 1),
+(3, 'Luxmètre', 'Capteur 3', 'Lux', '03:05:04', 1);
 
 -- --------------------------------------------------------
 
@@ -236,7 +272,14 @@ CREATE TABLE IF NOT EXISTS `shade_house` (
   `operationMode` tinyint(1) DEFAULT NULL,
   `dateTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`idShadeHouse`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Déchargement des données de la table `shade_house`
+--
+
+INSERT INTO `shade_house` (`idShadeHouse`, `currentAngle`, `operationMode`, `dateTime`) VALUES
+(1, 90.00, 0, '2025-02-28 12:57:57');
 
 -- --------------------------------------------------------
 
@@ -278,7 +321,15 @@ CREATE TABLE IF NOT EXISTS `weather` (
   `rain` tinyint(1) DEFAULT NULL,
   `wind` int DEFAULT NULL,
   PRIMARY KEY (`idWeather`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Déchargement des données de la table `weather`
+--
+
+INSERT INTO `weather` (`idWeather`, `dateTime`, `temperature`, `humidity`, `luminosity`, `rain`, `wind`) VALUES
+(1, '2025-02-28 13:03:38', 26.00, 53.00, 20.00, 0, 47),
+(2, '2025-03-14 08:36:44', 12.00, 87.00, 40.00, 1, 63);
 
 --
 -- Contraintes pour les tables déchargées
@@ -332,3 +383,4 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+

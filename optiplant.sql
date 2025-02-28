@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : ven. 28 fév. 2025 à 13:10
+-- Généré le : ven. 28 fév. 2025 à 14:16
 -- Version du serveur : 9.1.0
 -- Version de PHP : 8.3.14
 
@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS `alerts` (
 INSERT INTO `alerts` (`idAlert`, `AlertType`, `dateTime`, `message`, `idTray`) VALUES
 (1, 'Température ', '2025-02-28 12:42:15', 'Température élevée', 1),
 (2, 'Humidité ', '2025-02-28 12:42:15', 'Humidité basse', 1),
-(3, 'Vent', '2025-02-28 12:42:15', ' Vent fort', 1);
+(3, 'Vent', '2025-02-28 12:42:15', ' Vent fort', 2);
 
 -- --------------------------------------------------------
 
@@ -174,6 +174,27 @@ INSERT INTO `periods` (`idPeriod`, `name`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `pictures`
+--
+
+DROP TABLE IF EXISTS `pictures`;
+CREATE TABLE IF NOT EXISTS `pictures` (
+  `idPicture` int NOT NULL AUTO_INCREMENT,
+  `pathPicture` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `takenDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`idPicture`)
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Déchargement des données de la table `pictures`
+--
+
+INSERT INTO `pictures` (`idPicture`, `pathPicture`, `takenDate`) VALUES
+(1, ' sqddaqefesf\"a', '2025-02-28 14:14:48');
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `plants`
 --
 
@@ -181,7 +202,6 @@ DROP TABLE IF EXISTS `plants`;
 CREATE TABLE IF NOT EXISTS `plants` (
   `idPlant` int NOT NULL AUTO_INCREMENT,
   `plantName` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `plantDate` date DEFAULT NULL,
   `idGroup` int NOT NULL,
   PRIMARY KEY (`idPlant`),
   KEY `idGroupe` (`idGroup`)
@@ -191,11 +211,11 @@ CREATE TABLE IF NOT EXISTS `plants` (
 -- Déchargement des données de la table `plants`
 --
 
-INSERT INTO `plants` (`idPlant`, `plantName`, `plantDate`, `idGroup`) VALUES
-(1, 'Menthe', '2025-02-28', 1),
-(2, 'Basilic', '2025-02-10', 1),
-(3, 'Fraisier', '2025-02-13', 2),
-(4, 'Tomate', '2025-02-01', 2);
+INSERT INTO `plants` (`idPlant`, `plantName`, `idGroup`) VALUES
+(1, 'Menthe', 1),
+(2, 'Basilic', 1),
+(3, 'Fraisier', 2),
+(4, 'Tomate', 2);
 
 -- --------------------------------------------------------
 
@@ -292,6 +312,7 @@ CREATE TABLE IF NOT EXISTS `trays` (
   `idTray` int NOT NULL AUTO_INCREMENT,
   `nameTray` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `status` tinyint NOT NULL DEFAULT '1',
+  `plantDate` date DEFAULT NULL,
   `idPlant` int DEFAULT NULL,
   PRIMARY KEY (`idTray`),
   KEY `idPlante` (`idPlant`)
@@ -301,9 +322,9 @@ CREATE TABLE IF NOT EXISTS `trays` (
 -- Déchargement des données de la table `trays`
 --
 
-INSERT INTO `trays` (`idTray`, `nameTray`, `status`, `idPlant`) VALUES
-(1, 'Bac 1', 1, 1),
-(2, 'Bac 2', 1, 3);
+INSERT INTO `trays` (`idTray`, `nameTray`, `status`, `plantDate`, `idPlant`) VALUES
+(1, 'Bac 1', 1, '2025-02-05', 1),
+(2, 'Bac 2', 1, '2025-02-06', 3);
 
 -- --------------------------------------------------------
 

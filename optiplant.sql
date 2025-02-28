@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : jeu. 27 fév. 2025 à 11:07
+-- Généré le : ven. 28 fév. 2025 à 11:02
 -- Version du serveur : 9.1.0
 -- Version de PHP : 8.3.14
 
@@ -43,6 +43,22 @@ CREATE TABLE IF NOT EXISTS `alerts` (
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `data`
+--
+
+DROP TABLE IF EXISTS `data`;
+CREATE TABLE IF NOT EXISTS `data` (
+  `idData` int NOT NULL,
+  `value` int NOT NULL,
+  `dateTime` timestamp NULL DEFAULT NULL,
+  `idSensor` int NOT NULL,
+  PRIMARY KEY (`idData`),
+  KEY `idSensor` (`idSensor`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `electric_prod`
 --
 
@@ -72,11 +88,11 @@ CREATE TABLE IF NOT EXISTS `groups` (
 --
 
 INSERT INTO `groups` (`idGroup`, `name`) VALUES
-(1, '\0\0\0P\0\0\0l\0\0\0a\0\0\0n\0\0\0t\0\0\0e\0\0\0s\0\0\0 \0\0\0'),
-(2, '\0\0\0P\0\0\0l\0\0\0a\0\0\0n\0\0\0t\0\0\0e\0\0\0s\0\0\0 \0\0\0'),
-(3, '\0\0\0H\0\0\0e\0\0\0r\0\0\0b\0\0\0e\0\0\0s\0\0\0 \0\0\0a\0\0\0r\0\0\0o\0\0\0m\0\0\0a\0\0'),
-(4, '\0\0\0L\0\0\0'),
-(5, '\0\0\0P\0\0\0l\0\0\0a\0\0\0n\0\0\0t\0\0\0e\0\0\0 \0\0\0');
+(1, 'Plantes a feuilles'),
+(2, 'Plantes a fruits'),
+(3, 'Herbes aromatiques'),
+(4, 'Légumes'),
+(5, 'Plante a fleurs');
 
 -- --------------------------------------------------------
 
@@ -175,7 +191,7 @@ CREATE TABLE IF NOT EXISTS `recipes` (
   `sunlight` decimal(2,0) NOT NULL,
   PRIMARY KEY (`idRecipe`),
   KEY `idPeriode` (`idPeriod`),
-  KEY `idPlant` (`idPlant`)
+  KEY `Plant` (`idPlant`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
@@ -183,11 +199,29 @@ CREATE TABLE IF NOT EXISTS `recipes` (
 --
 
 INSERT INTO `recipes` (`idRecipe`, `idPeriod`, `idPlant`, `watering`, `dailyWatering`, `daily`, `nitrogen`, `phosphorus`, `potassium`, `humidityThreshold`, `sunlight`) VALUES
-(1, 1, 0, 1.60, 3.00, 1, 5.33, 5.33, 5.33, 50.00, 0),
-(2, 2, 0, 12.00, 1.00, 1, 72.00, 24.00, 24.00, 40.00, 0),
-(3, 1, 0, 2.00, 3.00, 1, 6.67, 6.67, 6.67, 50.00, 0),
-(4, 2, 0, 16.00, 1.00, 1, 64.00, 32.00, 64.00, 40.00, 0),
-(5, 3, 0, 16.00, 0.50, 0, 32.00, 64.00, 96.00, 40.00, 0);
+(1, 1, 1, 1.60, 3.00, 1, 5.33, 5.33, 5.33, 50.00, 0),
+(2, 2, 1, 12.00, 1.00, 1, 72.00, 24.00, 24.00, 40.00, 0),
+(3, 1, 3, 2.00, 3.00, 1, 6.67, 6.67, 6.67, 50.00, 0),
+(4, 2, 3, 16.00, 1.00, 1, 64.00, 32.00, 64.00, 40.00, 0),
+(5, 3, 3, 16.00, 0.50, 0, 32.00, 64.00, 96.00, 40.00, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `sensor`
+--
+
+DROP TABLE IF EXISTS `sensor`;
+CREATE TABLE IF NOT EXISTS `sensor` (
+  `idSensor` int NOT NULL AUTO_INCREMENT,
+  `type` varchar(20) COLLATE utf8mb4_general_ci NOT NULL,
+  `name` varchar(20) COLLATE utf8mb4_general_ci NOT NULL,
+  `unit` varchar(10) COLLATE utf8mb4_general_ci NOT NULL,
+  `freq` timestamp NOT NULL,
+  `idTray` int NOT NULL,
+  PRIMARY KEY (`idSensor`),
+  KEY `idTray` (`idTray`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -257,6 +291,12 @@ ALTER TABLE `alerts`
   ADD CONSTRAINT `alerts_ibfk_1` FOREIGN KEY (`idTray`) REFERENCES `trays` (`idTray`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 --
+-- Contraintes pour la table `data`
+--
+ALTER TABLE `data`
+  ADD CONSTRAINT `idSensor` FOREIGN KEY (`idSensor`) REFERENCES `sensor` (`idSensor`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+--
 -- Contraintes pour la table `irrigation`
 --
 ALTER TABLE `irrigation`
@@ -273,7 +313,14 @@ ALTER TABLE `plants`
 -- Contraintes pour la table `recipes`
 --
 ALTER TABLE `recipes`
-  ADD CONSTRAINT `contrainte2` FOREIGN KEY (`idPeriod`) REFERENCES `periods` (`idPeriod`);
+  ADD CONSTRAINT `contrainte0022` FOREIGN KEY (`idPlant`) REFERENCES `plants` (`idPlant`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  ADD CONSTRAINT `contrainte2` FOREIGN KEY (`idPeriod`) REFERENCES `periods` (`idPeriod`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+--
+-- Contraintes pour la table `sensor`
+--
+ALTER TABLE `sensor`
+  ADD CONSTRAINT `idTray` FOREIGN KEY (`idTray`) REFERENCES `trays` (`idTray`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 --
 -- Contraintes pour la table `trays`

@@ -1,14 +1,13 @@
-
 <?php
+// ID du bac (à remplacer dynamiquement selon votre logique)
+$idTray = 2;
 // Inclure le fichier contenant les variables
-include 'data_bac2.php';
+include 'data_bac.php';
+include 'alertes.php';
+
 ?>
 
 <!DOCTYPE html>
-
-
-
-
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
@@ -36,28 +35,35 @@ include 'data_bac2.php';
       position: relative;
     }
 
-    header .button-left, header .button-right {
+    /* Conteneur pour les boutons à gauche */
+    header .button-container {
       position: absolute;
+      left: 20px;
       top: 50%;
       transform: translateY(-50%);
+    }
+
+    /* Style commun pour les boutons */
+    header button {
       padding: 10px 20px;
       background-color: #333;
       color: white;
       border: none;
       border-radius: 5px;
       cursor: pointer;
+      margin-right: 10px;
     }
 
-    header .button-left {
-      left: 20px;
-    }
-
-    header .button-right {
-      right: 20px;
-    }
-
-    header .button-left:hover, header .button-right:hover {
+    header button:hover {
       background-color: #555;
+    }
+
+    /* Bouton de retour toujours à droite */
+    header .button-right {
+      position: absolute;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
     }
 
     .dashboard-nav {
@@ -181,7 +187,10 @@ include 'data_bac2.php';
   </div>
 
   <header>
-    <button class="button-left" onclick="changePlantation()">Changer la plantation</button>
+    <div class="button-container">
+      <button onclick="changePlantation()">Changer la plantation</button>
+      <button onclick="addrecette()">Ajouter une recette</button>
+    </div>
     <h1>Gestion du Bac 2</h1>
     <button class="button-right" onclick="goHome()">Retour à l'accueil</button>
   </header>
@@ -203,31 +212,48 @@ include 'data_bac2.php';
 
     <div class="tab-content" id="tab-2">
       <div class="growth-stage">
+	   <?php
+        // Exemple de la période pour afficher une vidéo différente
+        if ($periodName == 'Semis') {
+            $videoSource = 'semis.webm';
+        } elseif ($periodName == 'Developpement des racines') {
+            $videoSource = 'dev.webm';
+        } elseif ($periodName == 'Floraison et fructification') {
+            $videoSource = 'floraison.webm';
+        }
+	      elseif ($periodName == 'Croissance végétative') {
+            $videoSource = 'Croissance.webm';
+        }	
+		else {
+            $videoSource = 'animation.webm';  // Si la période n'est pas spécifiée
+        }
+        ?>
         <video width="200" height="200" autoplay loop muted>
-          <source src="animation.webm" type="video/webm">
+          <source src="<?php echo htmlspecialchars($videoSource); ?>" type="video/webm">
           Votre navigateur ne supporte pas la lecture de vidéos.
         </video>
       </div>
-			<p>Plant : <strong><?php echo htmlspecialchars($plantName); ?></strong></p>
-			<p>Période : <strong><?php echo htmlspecialchars($periodName); ?></strong></p>
+      <p>Plant : <strong><?php echo htmlspecialchars($plantName); ?></strong></p>
+      <p>Période : <strong><?php echo htmlspecialchars($periodName); ?></strong></p>
       <div class="separator"></div>
 
       <div class="details-container">
-        <div class="details-box">
-          <h3>Irrigations (dernières 24h)</h3>
-          <p>08:00 - 500ml <button onclick="toggleDetails('irrigation1')">+</button></p>
-          <div id="irrigation1" class="irrigation-details">Recette:<p>30mg N,</p><p>30mg P</p><p>30mg P</p><p>30mg P</p><p>30mg P</p><p>30mg P</p><p>30mg P</p></div>
-          <p>14:00 - 600ml <button onclick="toggleDetails('irrigation2')">+</button></p>
-          <div id="irrigation2" class="irrigation-details">Recette: 60mg N, 40mg P</div>
-          <p>20:00 - 550ml <button onclick="toggleDetails('irrigation3')">+</button></p>
-          <div id="irrigation3" class="irrigation-details">Recette: 55mg N, 35mg P</div>
-        </div>
+	  
+	  <div class="details-box">
+    <h3>Irrigations (dernières 24h)</h3>
+    <!-- Un élément qui contiendra la liste des irrigations -->
+    <div id="irrigations-list"></div>
+</div>
 
         <div class="details-box">
           <h3>Alertes (derniers 7 jours)</h3>
-          <p>- 21/02 : Température élevée</p>
-          <p>- 23/02 : Humidité basse</p>
-          <p>- 25/02 : Vent fort</p>
+          <?php if (count($alerts) > 0): ?>
+        <?php foreach ($alerts as $alert): ?>
+            <p>- <?php echo htmlspecialchars($alert['formattedDate']); ?> : <?php echo htmlspecialchars($alert['message']); ?></p>
+        <?php endforeach; ?>
+    <?php else: ?>
+        <p>Aucune alerte enregistrée.</p>
+    <?php endif; ?>
         </div>
       </div>
 
@@ -277,6 +303,51 @@ include 'data_bac2.php';
       // Remplacer cette ligne par la logique réelle de changement de plantation
       window.location.href = 'plantation.php';
     }
+
+    function addrecette() {
+      // Remplacer cette ligne par la logique réelle pour ajouter une recette
+      window.location.href = 'recette.php';
+    }
   </script>
+  
+  
+  <script>
+// Fonction pour récupérer les irrigations depuis le serveur
+function fetchIrrigations() {
+    fetch('irrigation_bac1.php')  // L'URL de votre fichier PHP
+        .then(response => response.json()) // Réponse JSON
+        .then(data => {
+            // Si des irrigations sont récupérées
+            if (data.length > 0) {
+                let irrigationHTML = '';
+                data.forEach(irrigation => {
+                    // Créer le HTML pour chaque irrigation
+                    irrigationHTML += `
+                        <p>
+                            ${irrigation.dateTime} - Recette: ${irrigation.recipeName}
+                            <button onclick="toggleDetails('irrigation${irrigation.idIrrigation}')">+</button>
+                        </p>
+                        <div id="irrigation${irrigation.idIrrigation}" class="irrigation-details" style="display: none;">
+                            Détails de l'irrigation : ${irrigation.recipeName}
+                        </div>
+                    `;
+                });
+                // Mettre à jour l'élément avec l'ID 'irrigations-list'
+                document.getElementById('irrigations-list').innerHTML = irrigationHTML;
+            } else {
+                // Si aucune irrigation n'est trouvée
+                document.getElementById('irrigations-list').innerHTML = "<p>Aucune irrigation trouvée.</p>";
+            }
+        })
+        .catch(error => {
+            console.error('Erreur:', error);
+        });
+}
+
+// Appeler la fonction pour récupérer les irrigations dès que la page est chargée
+document.addEventListener('DOMContentLoaded', fetchIrrigations);
+</script>
+  
+  
 </body>
 </html>

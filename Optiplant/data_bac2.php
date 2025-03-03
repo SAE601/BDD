@@ -36,7 +36,9 @@ if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
 		$plantName  = $row["plantName"] ;
 		$periodName  = $row["periodName"] ;
-        // echo "<p>Bac : " . $row["nameTray"] . " - Plante : " . $row["plantName"] . " - Période : " . $row["periodName"] . "</p>";
+		$hour  = $row["dateTime"] ;
+		$water  = $row["periodName"] ;
+         echo "<p>Bac : " . $row["nameTray"] . " - Plante : " . $row["plantName"] . " - Période : " . $row["periodName"] ." - Water : " . $water. " - Hour : " . $hour. "</p>";
     }
 } else {
     echo "<p>Aucune plante active trouvée.</p>";

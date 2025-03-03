@@ -4,7 +4,6 @@ $servername = "localhost";
 $username = "root";
 $password = "";
 $dbname = "optiplant";
-
 $conn = new mysqli($servername, $username, $password, $dbname);
 
 // Vérifier la connexion
@@ -24,7 +23,7 @@ LEFT JOIN irrigation i ON t.idTray = i.idTray
 LEFT JOIN recipes r ON i.idRecipe = r.idRecipe
 LEFT JOIN periods pr ON r.idPeriod = pr.idPeriod
 WHERE t.status = 1 
-  AND t.idTray = 1
+  AND t.idTray = $idTray
 GROUP BY t.idTray, t.nameTray, p.plantName, pr.name
 ORDER BY MAX(i.dateTime) DESC
 LIMIT 1";

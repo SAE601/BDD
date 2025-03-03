@@ -1,6 +1,4 @@
 <?php
-header('Content-Type: application/json');
-
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Récupération des données du formulaire
     $idPeriod = $_POST['idPeriod'];
@@ -19,36 +17,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Vérification de la connexion
     if ($conn->connect_error) {
-        echo json_encode(['success' => false, 'error' => "Échec de la connexion : " . $conn->connect_error]);
-        exit;
+        die("Échec de la connexion : " . $conn->connect_error);
     }
 
     // Préparation de la requête d'insertion
     $sql = "INSERT INTO recipes (idPeriod, idPlant, watering, dailyWatering, daily, nitrogen, phosphorus, potassium, humidityThreshold, sunlight)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
     $stmt = $conn->prepare($sql);
-    if (!$stmt) {
-        echo json_encode(['success' => false, 'error' => $conn->error]);
-        exit;
-    }
-    
     $stmt->bind_param("iiidddddds", $idPeriod, $idPlant, $watering, $dailyWatering, $daily, $nitrogen, $phosphorus, $potassium, $humidityThreshold, $sunlight);
 
-    // Exécution de la requête et renvoi de la réponse JSON
+    // Exécution de la requête
     if ($stmt->execute()) {
-        echo json_encode(['success' => true]);
+        echo "Recette ajoutée avec succès!";
+		header("Location: test.php");
     } else {
-        echo json_encode(['success' => false, 'error' => "Erreur lors de l'ajout de la recette : " . $stmt->error]);
+        echo "Erreur lors de l'ajout de la recette : " . $stmt->error;
     }
 
     // Fermeture de la connexion
     $stmt->close();
     $conn->close();
 }
-?>
-
-<?php
-// Redirige l'utilisateur vers la page de choix de recette
-header("Location: recette.php");
-exit();
 ?>

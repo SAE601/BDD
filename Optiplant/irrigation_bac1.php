@@ -16,7 +16,8 @@ if ($conn->connect_error) {
 $sql_irrigations = "SELECT i.idIrrigation, i.dateTime, r.idRecipe AS recipeName
                     FROM irrigation i
                     LEFT JOIN recipes r ON i.idRecipe = r.idRecipe
-                    WHERE i.idTray = 1
+                    WHERE i.idTray = $idTray 
+                    AND i.dateTime >= NOW() - INTERVAL 1 DAY
                     ORDER BY i.dateTime DESC";
 
 $result_irrigations = $conn->query($sql_irrigations);

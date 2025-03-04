@@ -12,7 +12,7 @@ include 'alertes.php';
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gestion du Bac 3</title>
+  <title>Gestion du Bac</title>
   <style>
     * {
       margin: 0;
@@ -191,18 +191,18 @@ include 'alertes.php';
       <button onclick="changePlantation()">Changer la plantation</button>
       <button onclick="addrecette()">Ajouter une recette</button>
     </div>
-    <h1>Gestion du Bac 3</h1>
+    <h1>Gestion du Bac </h1>
     <button class="button-right" onclick="goHome()">Retour à l'accueil</button>
   </header>
 
   <div class="container">
     <div class="tabs">
-      <div class="tab active" onclick="showTab(0)">Caméra</div>
+      <div class="tab" onclick="showTab(0)">Caméra</div>
       <div class="tab" onclick="showTab(1)">Résumé</div>
       <div class="tab" onclick="showTab(2)">Données détaillées</div>
     </div>
-
-    <div class="tab-content active" id="tab-0">
+<p style="font-size: 24px; font-weight: bold;">Bac sélectionné : <?php echo " " . $nameTray; ?></p>
+    <div class="tab-content" id="tab-0">
       <h2>Caméra - Contenu à venir...</h2>
     </div>
 
@@ -210,9 +210,13 @@ include 'alertes.php';
       <h2>Résumé - Contenu à venir...</h2>
     </div>
 
+	      
+
     <div class="tab-content" id="tab-2">
+	 
       <div class="growth-stage">
 	   <?php
+	   if($plantName) :
         // Exemple de la période pour afficher une vidéo différente
         if ($periodName == 'Semis') {
             $videoSource = 'semis.webm';
@@ -227,14 +231,26 @@ include 'alertes.php';
 		else {
             $videoSource = 'animation.webm';  // Si la période n'est pas spécifiée
         }
+		endif;
         ?>
         <video width="200" height="200" autoplay loop muted>
           <source src="<?php echo htmlspecialchars($videoSource); ?>" type="video/webm">
           Votre navigateur ne supporte pas la lecture de vidéos.
         </video>
       </div>
-      <p>Plant : <strong><?php echo htmlspecialchars($plantName); ?></strong></p>
-      <p>Période : <strong><?php echo htmlspecialchars($periodName); ?></strong></p>
+      <p>Plant : <strong><?php if($plantName) : echo htmlspecialchars($plantName); ?>
+	  <?php else: ?>
+        Ce bac est vide.
+    <?php endif; ?>
+	</strong></p>
+      <p>Période : <strong><?php if($plantName) : echo htmlspecialchars($periodName); ?></strong></p>
+	  	  <?php else: ?>
+        ...
+    <?php endif; ?>
+	        <p>Date : <strong><?php if($plantName) : echo htmlspecialchars($date); ?></strong></p>
+	  	  <?php else: ?>
+        ...
+    <?php endif; ?>
       <div class="separator"></div>
 
       <div class="details-container">
@@ -259,36 +275,51 @@ include 'alertes.php';
 
       <div class="separator"></div>
 
-      <div class="details-box" style="width: 100%;">
-        <h3>Données du Bac</h3>
-        <p>Température sol : 18°C</p>
-        <p>Température air : 22°C</p>
-        <p>Humidité : 60%</p>
-      </div>
+<div class="details-box" style="width: 100%;">
+    <h3>Données du Bac</h3>
+    <p>Température sol : <strong id="temp-sol"><?php echo htmlspecialchars($tempAir); ?></strong></p>
+    <p>Luminosité : <strong id="temp-air"><?php echo htmlspecialchars($lux); ?></strong></p>
+    <p>Humidité : <strong id="humidite"><?php echo htmlspecialchars($humidite); ?></strong></p>
+</div>
     </div>
   </div>
 
   <script>
-    function showTab(index) {
-      let tabs = document.querySelectorAll('.tab');
-      let contents = document.querySelectorAll('.tab-content');
+	function showTab(index) {
+    let tabs = document.querySelectorAll('.tab');
+    let contents = document.querySelectorAll('.tab-content');
 
-      tabs.forEach((tab, i) => {
+    tabs.forEach((tab, i) => {
         if (i === index) {
-          tab.classList.add('active');
+            tab.classList.add('active');
         } else {
-          tab.classList.remove('active');
+            tab.classList.remove('active');
         }
-      });
+    });
 
-      contents.forEach((content, i) => {
+    contents.forEach((content, i) => {
         if (i === index) {
-          content.classList.add('active');
+            content.classList.add('active');
         } else {
-          content.classList.remove('active');
+            content.classList.remove('active');
         }
-      });
+    });
+
+    // Sauvegarder l'index de l'onglet actif dans localStorage
+    localStorage.setItem('activeTab', index);
+}
+	
+
+
+// Vérifier si un onglet actif est stocké et le restaurer
+document.addEventListener('DOMContentLoaded', function () {
+    let activeTab = localStorage.getItem('activeTab');
+    if (activeTab !== null) {
+        showTab(parseInt(activeTab));
+    } else {
+        showTab(2); // Onglet par défaut si rien n'est stocké
     }
+});
 
     function toggleDetails(id) {
       let element = document.getElementById(id);
@@ -309,6 +340,8 @@ include 'alertes.php';
       window.location.href = 'recette.php';
     }
   </script>
+
+
   
   
   <script>
@@ -348,6 +381,11 @@ function fetchIrrigations() {
 document.addEventListener('DOMContentLoaded', fetchIrrigations);
 </script>
   
-  
+  <script>
+    setInterval(function(){
+        location.reload();
+    }, 3000); // Recharge toutes les 3 secondes
+</script>
+
 </body>
 </html>

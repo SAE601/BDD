@@ -190,7 +190,7 @@ $traysResult = mysqli_query($conn, $traysQuery);
 
             <button type="submit">Planter</button>
 			<p></p>
-			  <button type="button" class="back-button" onclick="window.history.back();">Retour</button>
+			  <button type="button" class="back-button" onclick="window.location.href='accueil.php';">Retour</button>
         </form>
 		
     </div>

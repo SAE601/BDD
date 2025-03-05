@@ -26,13 +26,13 @@ La base de données est conçue pour optimiser la gestion des plantations. Elle 
 
     recipes (recettes de culture) : Réglages des paramètres d'arrosage et de nutriments.
 
-    shade_house (serres ombragées) : Informations sur les serres.
+    shade_house (ombrières) : Informations sur les l'ouverture des ombrières.
 
     sensor (capteurs) : Liste et types de capteurs utilisés.
 
     data (données des capteurs) : Valeurs enregistrées par les capteurs.
 
-    pictures (images) : Historique des images capturées.
+    pictures (images) : Historique des images capturées par la caméra.
 
 ## 🚀 Installation
 Prérequis

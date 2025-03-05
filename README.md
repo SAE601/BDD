@@ -1,12 +1,12 @@
-OptiPlant - Base de Données
+# README - Base de Données
 
 Système de gestion de plantation intégrant une base de données optimisée pour le suivi des cultures, de l'irrigation et des conditions environnementales.
 
-📌 Description du Projet
+##📌 Description du Projet
 
 Ce projet vise à fournir une base de données relationnelle pour la gestion de plantes en automatisant le suivi des plants, l'irrigation, les capteurs et d'autres paramètres essentiels.
 
-🏗 Structure de la Base de Données
+##🏗 Structure de la Base de Données
 
 La base de données est conçue pour optimiser la gestion des plantations. Elle comprend les entités suivantes :
 
@@ -34,7 +34,7 @@ La base de données est conçue pour optimiser la gestion des plantations. Elle 
 
     pictures (images) : Historique des images capturées.
 
-🚀 Installation
+##🚀 Installation
 Prérequis
 
     MySQL ou MariaDB
@@ -50,7 +50,7 @@ Importation de la Base de Données
     Importez le fichier SQL dans votre serveur de base de données :
     SOURCE chemin/vers/le/fichier.sql;
 
-🛠 Utilisation
+##🛠 Utilisation
 
 Une fois la base de données installée, vous pouvez interagir avec les différentes tables via SQL ou une API.
 

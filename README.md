@@ -55,7 +55,8 @@ Importation de la Base de Données
 Une fois la base de données installée, vous pouvez interagir avec les différentes tables via SQL ou une API.
 
 Exemple de requête pour récupérer les alertes actives :
-SELECT * FROM alerts WHERE dateTime >= NOW() - INTERVAL 7 DAY;
+
+    SELECT * FROM alerts WHERE dateTime >= NOW() - INTERVAL 7 DAY;
 
 
 ## 

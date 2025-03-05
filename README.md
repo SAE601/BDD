@@ -58,6 +58,6 @@ Exemple de requête pour récupérer les alertes actives :
 SELECT * FROM alerts WHERE dateTime >= NOW() - INTERVAL 7 DAY;
 
 
-
+## 
 
 Voici le token de test de connexion influxdb : 1I0hlifEgawLNtX53D_kW5ECSSJ8VYHyRDRMBMzv2_geFX_73inPo_V0Bq4zkgRPYRQ0tuGVElT-4SuOIqRZNQ==

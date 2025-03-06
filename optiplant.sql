@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : ven. 28 fév. 2025 à 14:16
+-- Généré le : jeu. 06 mars 2025 à 06:16
 -- Version du serveur : 9.1.0
 -- Version de PHP : 8.3.14
 
@@ -166,7 +166,7 @@ CREATE TABLE IF NOT EXISTS `periods` (
 --
 
 INSERT INTO `periods` (`idPeriod`, `name`) VALUES
-(1, '\0\0\0S\0\0\0e\0\0\0m\0\0\0i\0\0\0s'),
+(1, 'Semis'),
 (2, 'Developpement des racines'),
 (3, 'Croissance végétative'),
 (4, 'Floraison et fructification');
@@ -205,7 +205,7 @@ CREATE TABLE IF NOT EXISTS `plants` (
   `idGroup` int NOT NULL,
   PRIMARY KEY (`idPlant`),
   KEY `idGroupe` (`idGroup`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Déchargement des données de la table `plants`
@@ -215,7 +215,8 @@ INSERT INTO `plants` (`idPlant`, `plantName`, `idGroup`) VALUES
 (1, 'Menthe', 1),
 (2, 'Basilic', 1),
 (3, 'Fraisier', 2),
-(4, 'Tomate', 2);
+(4, 'Tomate', 2),
+(5, 'Helios', 1);
 
 -- --------------------------------------------------------
 
@@ -314,17 +315,19 @@ CREATE TABLE IF NOT EXISTS `trays` (
   `status` tinyint NOT NULL DEFAULT '1',
   `plantDate` date DEFAULT NULL,
   `idPlant` int DEFAULT NULL,
+  `idPeriod` int DEFAULT NULL,
   PRIMARY KEY (`idTray`),
-  KEY `idPlante` (`idPlant`)
+  KEY `idPlante` (`idPlant`),
+  KEY `idPeriod` (`idPeriod`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Déchargement des données de la table `trays`
 --
 
-INSERT INTO `trays` (`idTray`, `nameTray`, `status`, `plantDate`, `idPlant`) VALUES
-(1, 'Bac 1', 1, '2025-02-05', 1),
-(2, 'Bac 2', 1, '2025-02-06', 3);
+INSERT INTO `trays` (`idTray`, `nameTray`, `status`, `plantDate`, `idPlant`, `idPeriod`) VALUES
+(1, 'Bac 1', 1, '2025-02-05', 1, 1),
+(2, 'Bac 2', 1, '2025-02-06', 3, 2);
 
 -- --------------------------------------------------------
 
@@ -398,7 +401,250 @@ ALTER TABLE `sensor`
 -- Contraintes pour la table `trays`
 --
 ALTER TABLE `trays`
+  ADD CONSTRAINT `bhetdfhrds ` FOREIGN KEY (`idPeriod`) REFERENCES `periods` (`idPeriod`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   ADD CONSTRAINT `contrainte3` FOREIGN KEY (`idPlant`) REFERENCES `plants` (`idPlant`);
+--
+-- Base de données : `sae_bomari_cmallem`
+--
+CREATE DATABASE IF NOT EXISTS `sae_bomari_cmallem` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `sae_bomari_cmallem`;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `alerte`
+--
+
+DROP TABLE IF EXISTS `alerte`;
+CREATE TABLE IF NOT EXISTS `alerte` (
+  `idalerte` int NOT NULL AUTO_INCREMENT,
+  `type_alerte` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+  `message` text COLLATE utf8mb4_general_ci NOT NULL,
+  `date_heure` timestamp NOT NULL,
+  PRIMARY KEY (`idalerte`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `alimentation`
+--
+
+DROP TABLE IF EXISTS `alimentation`;
+CREATE TABLE IF NOT EXISTS `alimentation` (
+  `idalimentation` int NOT NULL AUTO_INCREMENT,
+  `idbacs` int NOT NULL,
+  `idrecette` int NOT NULL,
+  `date_plantation` timestamp NOT NULL,
+  PRIMARY KEY (`idalimentation`),
+  KEY `contrainte1` (`idbacs`),
+  KEY `contrainte2` (`idrecette`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Déchargement des données de la table `alimentation`
+--
+
+INSERT INTO `alimentation` (`idalimentation`, `idbacs`, `idrecette`, `date_plantation`) VALUES
+(0, 1, 0, '2025-02-25 09:08:44'),
+(1, 2, 2, '2025-02-25 08:49:43'),
+(2, 3, 5, '2023-10-27 08:00:00'),
+(3, 4, 7, '2023-10-22 07:00:00');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `bacs`
+--
+
+DROP TABLE IF EXISTS `bacs`;
+CREATE TABLE IF NOT EXISTS `bacs` (
+  `idbacs` int NOT NULL,
+  `nom_bac` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `idplante` int NOT NULL,
+  `idrecette` int NOT NULL,
+  `date_plantation` timestamp NOT NULL,
+  `statut` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  PRIMARY KEY (`idbacs`),
+  KEY `contrainte3` (`idplante`),
+  KEY `contrainte4` (`idrecette`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Déchargement des données de la table `bacs`
+--
+
+INSERT INTO `bacs` (`idbacs`, `nom_bac`, `idplante`, `idrecette`, `date_plantation`, `statut`) VALUES
+(1, 'Bac_1', 1, 0, '2023-10-25 06:00:00', 'Actif'),
+(2, 'Bac_2', 2, 2, '2025-02-25 08:49:33', 'Actif'),
+(3, 'Bac_3', 3, 5, '2023-10-27 08:00:00', 'Inactif'),
+(4, 'bacs_4', 4, 7, '2023-10-22 07:00:00', 'Maintenance');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `groupe`
+--
+
+DROP TABLE IF EXISTS `groupe`;
+CREATE TABLE IF NOT EXISTS `groupe` (
+  `idgroupe` int NOT NULL,
+  `nom_groupe` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  PRIMARY KEY (`idgroupe`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Déchargement des données de la table `groupe`
+--
+
+INSERT INTO `groupe` (`idgroupe`, `nom_groupe`) VALUES
+(1, 'Plantes à feuilles'),
+(2, 'Plantes à fruits'),
+(3, 'Herbes aromatiques'),
+(4, 'Légumes racines'),
+(5, 'Plantes à fleures');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `irrigation`
+--
+
+DROP TABLE IF EXISTS `irrigation`;
+CREATE TABLE IF NOT EXISTS `irrigation` (
+  `idirrigation` int NOT NULL AUTO_INCREMENT,
+  `idrecette` int NOT NULL,
+  `date` timestamp NOT NULL,
+  PRIMARY KEY (`idirrigation`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `meteo`
+--
+
+DROP TABLE IF EXISTS `meteo`;
+CREATE TABLE IF NOT EXISTS `meteo` (
+  `idmeteo` int NOT NULL AUTO_INCREMENT,
+  `temperature` decimal(10,0) NOT NULL,
+  `humidite` decimal(10,0) NOT NULL,
+  `luminosite` decimal(10,0) NOT NULL,
+  `pluie` tinyint(1) NOT NULL,
+  `vent` int NOT NULL,
+  `date_heure` timestamp NOT NULL,
+  PRIMARY KEY (`idmeteo`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `ombriere`
+--
+
+DROP TABLE IF EXISTS `ombriere`;
+CREATE TABLE IF NOT EXISTS `ombriere` (
+  `idombriere` int NOT NULL AUTO_INCREMENT,
+  `position_actuelle` decimal(10,0) NOT NULL,
+  `position_cible` decimal(10,0) NOT NULL,
+  `statut` int NOT NULL,
+  `date_heure` timestamp NOT NULL,
+  `mode_fonctionnement` tinyint(1) NOT NULL,
+  PRIMARY KEY (`idombriere`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `plante`
+--
+
+DROP TABLE IF EXISTS `plante`;
+CREATE TABLE IF NOT EXISTS `plante` (
+  `idplante` int NOT NULL,
+  `idgroupe` int NOT NULL,
+  `nom_plante` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  PRIMARY KEY (`idplante`),
+  KEY `contrainte5` (`idgroupe`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Déchargement des données de la table `plante`
+--
+
+INSERT INTO `plante` (`idplante`, `idgroupe`, `nom_plante`) VALUES
+(1, 1, 'Laitue'),
+(2, 2, 'Fraisier'),
+(3, 3, 'Basilic'),
+(4, 4, 'Radis'),
+(5, 5, 'Oeillets d Inde');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `recette`
+--
+
+DROP TABLE IF EXISTS `recette`;
+CREATE TABLE IF NOT EXISTS `recette` (
+  `idrecette` int NOT NULL,
+  `groupe_plante` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `periode` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `eau_par_arrosage` float NOT NULL,
+  `arrosages_par_jour` int NOT NULL,
+  `eau_totale_par_jour` float NOT NULL,
+  `ratio_npk` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `azote_n` float NOT NULL,
+  `phosphore_p` float NOT NULL,
+  `potassium_k` float NOT NULL,
+  `qt_totale_nutriments` float NOT NULL,
+  `seuil_humidite_min_min` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `seuil_humidite_min_max` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
+  PRIMARY KEY (`idrecette`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Déchargement des données de la table `recette`
+--
+
+INSERT INTO `recette` (`idrecette`, `groupe_plante`, `periode`, `eau_par_arrosage`, `arrosages_par_jour`, `eau_totale_par_jour`, `ratio_npk`, `azote_n`, `phosphore_p`, `potassium_k`, `qt_totale_nutriments`, `seuil_humidite_min_min`, `seuil_humidite_min_max`) VALUES
+(0, '1', 'Semis', 1.6, 3, 4.8, '1-1-1', 5.33, 5.33, 5.33, 16, '50', '60'),
+(1, '1', 'Croissance végétative', 12, 1, 12, '3-1-1', 72, 24, 24, 120, '40', '50'),
+(2, '2', 'Semis', 2, 3, 6, '1-1-1', 6.67, 6.67, 6.67, 20, '50', '60'),
+(3, '2', 'Croissance végétative', 16, 1, 16, '2-1-2', 64, 32, 64, 160, '40', '50'),
+(4, '2', 'Floraison et fructification', 16, 1, 16, '1-2-3', 32, 32, 96, 160, '40', '50'),
+(5, '3', 'Semis', 1.2, 3, 3.6, '1-1-1', 4, 4, 4, 12, '50', '60'),
+(6, '3', 'Croissance végétative', 8, 1, 8, '2-1-2', 32, 16, 32, 80, '40', '50'),
+(7, '4', 'Semis', 2, 3, 6, '1-1-1', 6.67, 6.67, 6.67, 20, '50', '60'),
+(8, '4', 'Croissance végétative', 12, 1, 12, '2-1-2', 48, 24, 48, 120, '40', '50'),
+(9, '4', 'Développement des racines', 16, 1, 16, '1-1-3', 32, 32, 96, 160, '40', '50'),
+(10, '5', 'Semis', 2, 3, 6, '1-1-1', 6.67, 6.67, 6.67, 20, '50', '60'),
+(11, '5', 'Croissance végétative', 12, 1, 12, '1-1-3', 24, 24, 72, 120, '40', '50'),
+(12, '5', 'Floraison', 16, 1, 16, '1-1-1', 53.33, 53.33, 53.33, 160, '40', '50');
+
+--
+-- Contraintes pour les tables déchargées
+--
+
+--
+-- Contraintes pour la table `alimentation`
+--
+ALTER TABLE `alimentation`
+  ADD CONSTRAINT `contrainte1` FOREIGN KEY (`idbacs`) REFERENCES `bacs` (`idbacs`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  ADD CONSTRAINT `contrainte2` FOREIGN KEY (`idrecette`) REFERENCES `recette` (`idrecette`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+--
+-- Contraintes pour la table `bacs`
+--
+ALTER TABLE `bacs`
+  ADD CONSTRAINT `contrainte3` FOREIGN KEY (`idplante`) REFERENCES `plante` (`idplante`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  ADD CONSTRAINT `contrainte4` FOREIGN KEY (`idrecette`) REFERENCES `recette` (`idrecette`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+--
+-- Contraintes pour la table `plante`
+--
+ALTER TABLE `plante`
+  ADD CONSTRAINT `contrainte5` FOREIGN KEY (`idgroupe`) REFERENCES `groupe` (`idgroupe`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
